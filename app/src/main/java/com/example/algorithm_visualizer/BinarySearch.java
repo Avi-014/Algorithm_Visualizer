@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,11 +17,13 @@ public class BinarySearch extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_binary_search);
 
         FloatingActionButton fab = findViewById(R.id.copy_button);
         TextView codeSnippetTextView = findViewById(R.id.code_snippet);
-        String codeSnippet = "public static int binarySearch(int[] array, int target) {\n" +
+        String codeSnippet = "int binarySearch(int[] array, int target) {\n" +
                 "    int left = 0;\n" +
                 "    int right = array.length - 1;\n" +
                 "\n" +

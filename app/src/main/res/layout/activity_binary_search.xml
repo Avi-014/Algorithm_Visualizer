@@ -3,18 +3,49 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_gravity="bottom"
-        android:background="#343541">
-
-
+        android:layout_height="wrap_content"
+        android:background="#1D1D1D"
+        android:padding="15dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Binary Search"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="30sp"/>
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:text="_______________"
+                android:layout_marginTop="-30dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="30sp"/>
+        </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/copy_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_copy_content"
+            android:layout_marginStart="-65dp"
+            app:maxImageSize="50dp"
+            android:backgroundTint="#fff"
+            android:contentDescription="TODO" />
+    </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#343541"
             android:padding="10dp">
 
         <HorizontalScrollView
@@ -27,22 +58,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#ffffff"
-                        android:padding="10dp"
-                        android:textSize="17sp"
+                        android:padding="5dp"
+                        android:textSize="25sp"
                         android:textStyle="bold"
                         android:text="binary search code"/>
 
         </HorizontalScrollView>
         </ScrollView>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/copy_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_copy_content"
-            app:maxImageSize="50dp"
-            android:backgroundTint="#fff"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="12dp"
-            android:contentDescription="TODO" />
-    </FrameLayout>
 </LinearLayout>

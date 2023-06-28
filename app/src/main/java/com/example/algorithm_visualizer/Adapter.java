@@ -2,6 +2,7 @@ package com.example.algorithm_visualizer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,13 +44,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
         holder.AlgoName.setAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim4));
         if (position == 0){
-            holder.RecyclerItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, ChatBot.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    context.startActivity(intent);
-                }
+            holder.RecyclerItem.setOnClickListener(v -> {
+                Intent intent = new Intent(context, ChatBot.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(intent);
             });
         }
         if (position == 1) {

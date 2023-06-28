@@ -13,8 +13,17 @@ public class MessageModelClass {
         return mText;
     }
 
+
+    public void setmText(String mText) {
+        this.mText = mText;
+    }
+
     public boolean isSentByUser() {
         return isSentByUser;
+    }
+
+    public void setSentByUser(boolean sentByUser) {
+        isSentByUser = sentByUser;
     }
 
 

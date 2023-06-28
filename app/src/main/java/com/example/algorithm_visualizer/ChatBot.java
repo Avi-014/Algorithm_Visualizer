@@ -3,35 +3,36 @@ package com.example.algorithm_visualizer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class ChatBot extends AppCompatActivity {
 
     List<MessageModelClass> messagelist;
@@ -41,12 +42,14 @@ public class ChatBot extends AppCompatActivity {
     ImageView microphone;
     MessageAdapter messageAdapter;
     private static final int REQUEST_CODE_SPEECH_INPUT = 1;
-    private final String apiurl = "https://api.openai.com/v1/chat/completions/";
-    String accessToken = "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";
+    private final String BASE_URL = "https://api.openai.com/v1/chat/completions";
+    String accessToken = "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";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_chat_bot);
 
         botRecyclerView = findViewById(R.id.botRecyclerView);
@@ -89,84 +92,85 @@ public class ChatBot extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_SPEECH_INPUT) {
             if (resultCode == RESULT_OK && data != null) {
-                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                ArrayList<String> result = data.getStringArrayListExtra(
+                                         RecognizerIntent.EXTRA_RESULTS);
                 askbotEditText.setText(Objects.requireNonNull(result).get(0));
             }
         }
     }
     private void processAI() {
-        String Text = askbotEditText.getText().toString();
-        messagelist.add(new MessageModelClass(Text,true));
+        String text = askbotEditText.getText().toString();
+        messagelist.add(new MessageModelClass(text,true));
         messageAdapter.notifyItemInserted(messagelist.size()-1);
         botRecyclerView.scrollToPosition(messagelist.size()-1);
         askbotEditText.getText().clear();
 
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(25, TimeUnit.SECONDS)
-                .readTimeout(25, TimeUnit.SECONDS)
-                .writeTimeout(25, TimeUnit.SECONDS)
-                .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(apiurl)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        JSONObject requestBody = new JSONObject();
+        try {
+            JSONArray messagesArray = new JSONArray();
 
-        ApiService apiService = retrofit.create(ApiService.class);
+            JSONObject systemMessage = new JSONObject();
+            systemMessage.put("role", "system");
+            systemMessage.put("content", text);
+            messagesArray.put(systemMessage);
 
-        JsonObject requestBody = new JsonObject();
+            requestBody.put("model", "gpt-3.5-turbo");
+            requestBody.put("messages", messagesArray);
 
-        requestBody.addProperty("model", "gpt-4");
-        requestBody.addProperty("prompt", Text);
-        requestBody.addProperty("max_tokens", 100);
-        requestBody.addProperty("temperature", 1);
-        requestBody.addProperty("top_p", 1);
-        requestBody.addProperty("frequency_penalty", 0.0);
-        requestBody.addProperty("presence_penalty", 0.0);
-
-        Call<JsonObject> call = apiService.sendRequest("https://api.openai.com/v1/chat/completions/","Bearer " + accessToken, "application/json",requestBody);
-        call.enqueue(new Callback<JsonObject>() {
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, requestBody,
+                new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    JsonObject jsonResponse = response.body();
-                    try {
-                        assert jsonResponse != null;
-                        JsonArray choicesArray = jsonResponse.getAsJsonArray("choices");
-                        if (choicesArray != null && choicesArray.size() > 0) {
-                            JsonObject choiceObject = choicesArray.get(0).getAsJsonObject();
-                            String text = choiceObject.get("text").getAsString();
-                            messagelist.add(new MessageModelClass(text.replaceFirst("\n", "").replaceFirst("\n", ""), false));
-                            messageAdapter.notifyItemInserted(messagelist.size() - 1);
-                            botRecyclerView.scrollToPosition(messagelist.size() - 1);
-                        }
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-                } else {
-                    Log.e("API Error", response.toString());
-                    messagelist.add(new MessageModelClass(response.toString().replaceFirst("\n","").replaceFirst("\n",""),false));
-                    messageAdapter.notifyItemInserted(messagelist.size() - 1);
-                    botRecyclerView.scrollToPosition(messagelist.size() - 1);
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray choices = response.getJSONArray("choices");
+                    JSONObject choice = choices.getJSONObject(0);
+                    JSONObject message = choice.getJSONObject("message");
+                    String text = message.getString("text");
+                    messagelist.add(new MessageModelClass(text.replaceFirst("\n","").
+                            replaceFirst("\n", ""), false));
+                    messageAdapter.notifyItemInserted(messagelist.size()-1);
+                    botRecyclerView.scrollToPosition(messagelist.size()-1);
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             }
-
-            final int maxRetries = 3;
-            int retryCount = 0;
+        }, new Response.ErrorListener() {
             @Override
-            public void onFailure(@NonNull Call<JsonObject> call, @NonNull Throwable t) {
-
-                if (retryCount < maxRetries) {
-                    retryCount++;
-                    call.clone().enqueue(this);
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse != null && error.networkResponse.statusCode == 429) {
+                    // Handle "Too Many Requests" error
+                    // You can implement logic to retry the request after a certain time or show a user-friendly message
+                    messagelist.add(new MessageModelClass("Too many requests. Please try again later.", false));
                 } else {
-                    Log.e("API Error", t.toString());
-                    messagelist.add(new MessageModelClass(t.toString().replaceFirst("\n", "").replaceFirst("\n", ""), false));
-                    messageAdapter.notifyItemInserted(messagelist.size() - 1);
-                    botRecyclerView.scrollToPosition(messagelist.size() - 1);
+                    // Handle other errors
+                    messagelist.add(new MessageModelClass("Error: " + error.getMessage(), false));
                 }
+                messageAdapter.notifyItemInserted(messagelist.size() - 1);
+                botRecyclerView.scrollToPosition(messagelist.size() - 1);
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put( "Authorization", "Bearer " + accessToken);
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+            @Override
+            protected Response< JSONObject > parseNetworkResponse(NetworkResponse response){
+                return super.parseNetworkResponse(response);
+            }
+        };
+
+        int timeoutMs = 1000;
+        int maxNumRetries = 3;
+        float backoffMultiplier = 2.0f;
+        RetryPolicy policy = new DefaultRetryPolicy(timeoutMs , maxNumRetries, backoffMultiplier);
+        request.setRetryPolicy(policy);
+        MySingleton.getInstance(ChatBot.this).addToRequestQueue(request);
     }
 }
