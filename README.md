@@ -1,5 +1,14 @@
 #**Algorithm VisualiZer**
 
+
+To run this app all you need is your Api Key generated from openai website 
+copy teh api secret key 
+
+Replace the **Paste_Your_Api_Key_Here** at line no 36 (**private static final String YOUR_API_KEY = "Paste_Your_Api_Key_Here";**)  in ChatBot Activity.
+
+
+
+
 Algorithm VisualiZer is an Android application designed to help students learn and understand various data structures, algorithms, methods, and programs. 
 The app also integrates a chatbot feature powered by OpenAI's API, providing speech functionality. 
 This README file provides an overview of the app's features, installation instructions, and usage guidelines.
