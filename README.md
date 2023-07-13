@@ -4,7 +4,8 @@ Algorithm VisualiZer is an Android application designed to help students learn a
 The app also integrates a chatbot feature powered by OpenAI's API, providing speech functionality. 
 This README file provides an overview of the app's features, installation instructions, and usage guidelines.
 
-![Screenshot_20230628-173103](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/b646bed3-be44-4f2b-955a-8b316090903c)
+![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/8f09028a-8ac0-4c90-8ffa-3ba059c83474)
+
 
 
 
@@ -16,7 +17,8 @@ This README file provides an overview of the app's features, installation instru
 **Comprehensive Content**: Algorithm VisualiZer provides a wide range of data structures, algorithms, methods, and programs commonly
 used in computer scienceand programming.
 
-![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/56e698bd-9423-4d55-b85c-08fc7a80488f)
+![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/73f6d344-eda6-4aaa-a9ea-f76cd64234c7)
+
 
 
 
@@ -28,7 +30,8 @@ used in computer scienceand programming.
 
 **Search Functionality**: Users can easily search for specific data structures, algorithms, or programs using keywords or tags.
 
-![Screenshot_20230628-1734012](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/f6859388-f169-4a05-99ff-e7b117d2e49e)
+![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/7d73b1ca-00c6-4b55-bb35-469ef5a71c03)
+
 
 
 
@@ -45,7 +48,8 @@ used in computer scienceand programming.
                       method, aiding users in practical implementation.
 
 
-![Screenshot_20230628-174117](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/5872c5a9-ad2d-491e-ab0f-915bbc7f66ca)
+![249457875-5872c5a9-ad2d-491e-ab0f-915bbc7f66ca](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/866c6d22-1212-4c8c-be17-4c19639f78c1)
+
 
 
 
@@ -57,16 +61,17 @@ used in computer scienceand programming.
 
 **Chatbot Integration**: The app integrates a chatbot powered by OpenAI's API, enabling users to interact with the app using speech functionality.
 
-![Screenshot_20230628-173354](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/9904dcdf-7c56-49d1-8d07-7193e03e18e7)
-
-
-
-![Screenshot_20230628-173444](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/161a5e02-8317-48d0-90ec-d73ced6a5c6c)
+![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/27d4cafa-f0c1-46ff-bccb-04001ce2b7d6)
 
 
 
 
-![Screenshot_20230628-173449](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/698f3bf3-1a98-449f-86da-98a6d045f5e5)
+![249458163-161a5e02-8317-48d0-90ec-d73ced6a5c6c](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/644ffd95-33bb-47f4-96e4-ff29067a093b)
+
+
+
+
+![249458228-698f3bf3-1a98-449f-86da-98a6d045f5e5](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/481b1118-09bc-4adf-8744-f1b60a6824d0)
 
 
 
@@ -76,12 +81,13 @@ used in computer scienceand programming.
 **Privacy and Security**: Algorithm VisualiZer ensures the privacy and security of user data through secure storage and encryption techniques,
 with user data stored using NVARCHAR for enhanced password protection.
 
-![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/66387762-b805-4b12-9877-d48d3759a25a)
+![249458505-66387762-b805-4b12-9877-d48d3759a25a](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/21ad3c08-eb85-4588-b1bd-bc0b5d43122f)
 
 
 
 
-![Screenshot_20230628-173118](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/62053f50-4afb-4ffa-88d4-02c9055ca37c)
+![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/e4a9b715-a664-4848-9b71-9189e4ace5b2)
+
 
 
 
@@ -106,7 +112,6 @@ Algorithm VisualiZer prioritizes user privacy and security. Here are the measure
 Encryption: The app implements encryption techniques to protect sensitive user information during storage and transmission.
 User Authentication: Algorithm VisualiZer includes user authentication mechanisms to ensure that only authorized individuals can access certain features or data.
 Secure Network Communication: All data transmitted between the app and the server, including chatbot interactions, is encrypted using secure protocols, such as HTTPS.
-Contributing
 
 
 We welcome contributions to enhance Algorithm VisualiZer.Feel free to modify and distribute it according to the terms of the license.
