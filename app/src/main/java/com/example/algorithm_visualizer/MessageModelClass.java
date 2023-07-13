@@ -1,30 +1,34 @@
 package com.example.algorithm_visualizer;
 
 public class MessageModelClass {
-    String mText;
-    boolean isSentByUser;
+    public static String SENT_BY_ME = "me";
+    public static String SENT_BY_BOT = "bot";
 
-    public MessageModelClass(String mText, boolean isSentByUser) {
-        this.mText = mText;
-        this.isSentByUser = isSentByUser;
+    public MessageModelClass() {
     }
 
-    public String getmText() {
-        return mText;
+    public MessageModelClass(String message, String sentBy) {
+        this.message = message;
+        this.sentBy = sentBy;
     }
 
-
-    public void setmText(String mText) {
-        this.mText = mText;
+    public String getMessage() {
+        return message;
     }
 
-    public boolean isSentByUser() {
-        return isSentByUser;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void setSentByUser(boolean sentByUser) {
-        isSentByUser = sentByUser;
+    public String getSentBy() {
+        return sentBy;
     }
 
+    public void setSentBy(String sentBy) {
+        this.sentBy = sentBy;
+    }
+
+    String message;
+    String sentBy;
 
 }

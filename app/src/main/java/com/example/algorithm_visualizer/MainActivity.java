@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     Button logout_btn;
+
     LinearLayoutManager linearLayoutManager;
     List<ModelClass> AlgoList;
     Adapter adapter;

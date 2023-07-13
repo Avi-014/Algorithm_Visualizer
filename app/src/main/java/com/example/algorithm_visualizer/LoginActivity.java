@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     ImageView signup_btn;
     EditText email_or_username;
     EditText password;
+    TextView ForgotPassword;
     private static final String url = "http://192.168.29.222/APIs/LOGIN.php";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -34,14 +36,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
 
         login_btn = findViewById(R.id.login_btn);
         signup_btn = findViewById(R.id.signup_btn);
         email_or_username = findViewById(R.id.email_or_username);
         password = findViewById(R.id.password);
+        ForgotPassword = findViewById(R.id.ForgotPassword);
+
 
         sharedPreferences = getSharedPreferences("LoginFile",MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -54,14 +56,23 @@ public class LoginActivity extends AppCompatActivity {
         login_btn.setOnClickListener(v -> {
            String EmailOrUsername = email_or_username.getText().toString();
            String Password = password.getText().toString();
+            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+            finishAffinity();
 
-           if (EmailOrUsername.isEmpty()){
-               email_or_username.setError("Enter Email or UserName");
-           } else if (Password.isEmpty()) {
-               password.setError("Enter a Valid Password");
-           } else {
-               login(EmailOrUsername,Password);
-           }
+//           if (EmailOrUsername.isEmpty()){
+//               email_or_username.setError("Enter Email or UserName");
+//           } else if (Password.isEmpty()) {
+//               password.setError("Enter a Valid Password");
+//           } else {
+//               login(EmailOrUsername,Password);
+//           }
+        });
+
+
+        ForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this,ForgotPassword.class);
+            startActivity(intent);
+            finish();
         });
 
 
@@ -88,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "No Internet", Toast.LENGTH_LONG).show();
                 Log.i("Error", error.toString());
             } else {
+                Log.i("Authentication Error" , error.toString());
                 Toast.makeText(LoginActivity.this, "Something went wrong!", Toast.LENGTH_LONG).show();
             }
         }){

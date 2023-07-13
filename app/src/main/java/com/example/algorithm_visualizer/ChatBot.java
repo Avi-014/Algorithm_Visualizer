@@ -3,71 +3,74 @@ package com.example.algorithm_visualizer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class ChatBot extends AppCompatActivity {
 
-    List<MessageModelClass> messagelist;
+    private static final String BASE_URL = "https://api.openai.com/v1/completions";
+    private static final String YOUR_API_KEY = "Paste_Your_Api_Key_Here";
+
+    public static final MediaType JSON
+            = MediaType.get("application/json; charset=utf-8");
+
+    OkHttpClient client = new OkHttpClient();
+
+    List<MessageModelClass> messageList;
     RecyclerView botRecyclerView;
-    EditText askbotEditText;
-    ImageButton sendbtn;
-    ImageView microphone;
+    EditText askBotEditText;
+    ImageButton sendButton;
+    ImageButton microphone;
     MessageAdapter messageAdapter;
     private static final int REQUEST_CODE_SPEECH_INPUT = 1;
-    private final String BASE_URL = "https://api.openai.com/v1/chat/completions";
-    String accessToken = "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";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_chat_bot);
 
         botRecyclerView = findViewById(R.id.botRecyclerView);
         botRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        askbotEditText = findViewById(R.id.askbotEditText);
-        sendbtn = findViewById(R.id.sendbtn);
+        askBotEditText = findViewById(R.id.askbotEditText);
+        sendButton = findViewById(R.id.sendbtn);
         microphone = findViewById(R.id.microphone);
 
-
-        messagelist = new ArrayList<>();
-        messageAdapter = new MessageAdapter(messagelist);
+        messageList = new ArrayList<>();
+        messageAdapter = new MessageAdapter(messageList);
         botRecyclerView.setAdapter(messageAdapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setStackFromEnd(true);
+        botRecyclerView.setLayoutManager(linearLayoutManager);
 
-        sendbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                processAI();
-            }
+        sendButton.setOnClickListener(v -> {
+            String Question = askBotEditText.getText().toString().trim();
+            addToChatList(Question , MessageModelClass.SENT_BY_ME);
+            askBotEditText.setText("");
+            processAI(Question);
         });
 
         microphone.setOnClickListener(v -> {
@@ -88,89 +91,81 @@ public class ChatBot extends AppCompatActivity {
             }
         });
     }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SPEECH_INPUT) {
-            if (resultCode == RESULT_OK && data != null) {
+        if (requestCode == REQUEST_CODE_SPEECH_INPUT){
+            if (resultCode == RESULT_OK && data!=null){
                 ArrayList<String> result = data.getStringArrayListExtra(
-                                         RecognizerIntent.EXTRA_RESULTS);
-                askbotEditText.setText(Objects.requireNonNull(result).get(0));
+                        RecognizerIntent.EXTRA_RESULTS);
+                askBotEditText.setText(result.get(0));
             }
         }
     }
-    private void processAI() {
-        String text = askbotEditText.getText().toString();
-        messagelist.add(new MessageModelClass(text,true));
-        messageAdapter.notifyItemInserted(messagelist.size()-1);
-        botRecyclerView.scrollToPosition(messagelist.size()-1);
-        askbotEditText.getText().clear();
 
-
-        JSONObject requestBody = new JSONObject();
-        try {
-            JSONArray messagesArray = new JSONArray();
-
-            JSONObject systemMessage = new JSONObject();
-            systemMessage.put("role", "system");
-            systemMessage.put("content", text);
-            messagesArray.put(systemMessage);
-
-            requestBody.put("model", "gpt-3.5-turbo");
-            requestBody.put("messages", messagesArray);
-
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, requestBody,
-                new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray choices = response.getJSONArray("choices");
-                    JSONObject choice = choices.getJSONObject(0);
-                    JSONObject message = choice.getJSONObject("message");
-                    String text = message.getString("text");
-                    messagelist.add(new MessageModelClass(text.replaceFirst("\n","").
-                            replaceFirst("\n", ""), false));
-                    messageAdapter.notifyItemInserted(messagelist.size()-1);
-                    botRecyclerView.scrollToPosition(messagelist.size()-1);
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error.networkResponse != null && error.networkResponse.statusCode == 429) {
-                    // Handle "Too Many Requests" error
-                    // You can implement logic to retry the request after a certain time or show a user-friendly message
-                    messagelist.add(new MessageModelClass("Too many requests. Please try again later.", false));
-                } else {
-                    // Handle other errors
-                    messagelist.add(new MessageModelClass("Error: " + error.getMessage(), false));
-                }
-                messageAdapter.notifyItemInserted(messagelist.size() - 1);
-                botRecyclerView.scrollToPosition(messagelist.size() - 1);
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put( "Authorization", "Bearer " + accessToken);
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-            @Override
-            protected Response< JSONObject > parseNetworkResponse(NetworkResponse response){
-                return super.parseNetworkResponse(response);
-            }
-        };
-
-        int timeoutMs = 1000;
-        int maxNumRetries = 3;
-        float backoffMultiplier = 2.0f;
-        RetryPolicy policy = new DefaultRetryPolicy(timeoutMs , maxNumRetries, backoffMultiplier);
-        request.setRetryPolicy(policy);
-        MySingleton.getInstance(ChatBot.this).addToRequestQueue(request);
+    private void addToChatList(String Question , String sentBy) {
+        runOnUiThread(() -> {
+            messageList.add(new MessageModelClass(Question, sentBy));
+            messageAdapter.notifyDataSetChanged();
+            messageAdapter.notifyItemInserted(messageList.size() - 1);
+            botRecyclerView.smoothScrollToPosition(messageAdapter.getItemCount());
+        });
     }
+
+    void addResponse(String response){
+        addToChatList(response,MessageModelClass.SENT_BY_BOT);
+    }
+
+        private void processAI(String Question) {
+            JSONObject jsonBody = null;
+            try {
+                jsonBody = new JSONObject();
+                jsonBody.put("model", "text-davinci-003");
+                jsonBody.put("prompt", Question);
+                jsonBody.put("max_tokens", 4000);
+                jsonBody.put("temperature", 0);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
+            Request request = new Request.Builder()
+                    .url(BASE_URL)
+                    .header("Authorization","Bearer "+YOUR_API_KEY)
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                    addResponse("Failed to load response due to "+e.getMessage());
+                }
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    assert response.body() != null;
+                    if (response.isSuccessful()){
+                        JSONObject jsonObject;
+                        try {
+                            jsonObject = new JSONObject(response.body().string());
+                            JSONArray jsonArray = jsonObject.getJSONArray("choices");
+                            String result = jsonArray.getJSONObject(0).getString("text");
+                            addResponse(result.trim());
+                        } catch (JSONException e) {
+                           e.printStackTrace();
+                        }
+                    } else {
+                        addResponse("Failed to load response due to "+response.body().string());
+                    }
+                }
+            });
+
+//        int timeoutMs = 1000;
+//        int maxNumRetries = 3;
+//        float backoffMultiplier = 2.0f;
+//        RetryPolicy policy = new DefaultRetryPolicy(timeoutMs , maxNumRetries, backoffMultiplier);
+//        request.setRetryPolicy(policy);
+//        MySingleton.getInstance(ChatBot.this).addToRequestQueue();
+        }
 }

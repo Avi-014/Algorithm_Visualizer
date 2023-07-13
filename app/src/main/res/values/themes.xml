@@ -2,12 +2,12 @@
     <!-- Base application theme. -->
     <style name="Theme.Algorithm_Visualizer" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
+        <item name="colorPrimary">#343541</item>
+        <item name="colorPrimaryDark">#343541</item>
+        <item name="colorAccent">#343541</item>
 
         <!-- status bar color. -->
-        <item name="android:statusBarColor" >@color/purple_200</item>
+        <item name="android:statusBarColor" >#343541</item>
 
         <!-- Customize your theme here. -->
     </style>

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1D1D1D"
+    android:background="#343541"
     android:orientation="vertical"
     tools:context=".SignUp">
 
@@ -47,7 +47,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/enter_section"
-                    android:inputType="textEmailAddress"
                     android:textSize="17sp"
                     android:textColor="@color/white"/>
 
@@ -97,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:counterEnabled="true"
-                app:startIconDrawable="@drawable/group_2"
+                app:startIconDrawable="@drawable/pass_lock"
                 app:startIconTint="#626262"
                 app:counterMaxLength="20"
                 android:hint="Enter Password"
@@ -130,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:counterEnabled="true"
-                app:startIconDrawable="@drawable/group_2"
+                app:startIconDrawable="@drawable/pass_lock"
                 app:startIconTint="#626262"
                 app:counterMaxLength="20"
                 android:hint="Confirm Password"
@@ -203,7 +202,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/facebook"
+                android:src="@drawable/linkedin"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="50dp"/>
         </LinearLayout>

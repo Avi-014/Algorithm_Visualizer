@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Algorithm_Visualizer</string>
+    <string name="app_name">Algo Viz</string>
 
     <!-- Actions -->
     <string name="find_and_replace">Find And Replace</string>
