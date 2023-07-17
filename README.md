@@ -2,9 +2,9 @@
 
 
 To run this app all you need is your Api Key generated from openai website 
-copy teh api secret key 
+copy the api secret key 
 
-Replace the **Paste_Your_Api_Key_Here** at line no 36 (**private static final String YOUR_API_KEY = "Paste_Your_Api_Key_Here";**)  in ChatBot Activity.
+Replace the **Paste_Your_Api_Key_Here** (**private static final String YOUR_API_KEY = "Paste_Your_Api_Key_Here";**)  in ChatBot Activity.
 
 
 
