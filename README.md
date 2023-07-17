@@ -13,41 +13,21 @@ Algorithm VisualiZer is an Android application designed to help students learn a
 The app also integrates a chatbot feature powered by OpenAI's API, providing speech functionality. 
 This README file provides an overview of the app's features, installation instructions, and usage guidelines.
 
-![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/8f09028a-8ac0-4c90-8ffa-3ba059c83474)
 
 
-
-
+![1](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/ea59175f-2d8c-41ce-afd7-5b9ed49e17de)
 
 
 
 
 **Features**
 **Comprehensive Content**: Algorithm VisualiZer provides a wide range of data structures, algorithms, methods, and programs commonly
-used in computer scienceand programming.
-
-![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/73f6d344-eda6-4aaa-a9ea-f76cd64234c7)
-
-
-
-
-
-
-
-
-
+used in computer science and programming.
 
 **Search Functionality**: Users can easily search for specific data structures, algorithms, or programs using keywords or tags.
 
-![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/7d73b1ca-00c6-4b55-bb35-469ef5a71c03)
 
-
-
-
-
-
-
-
+![5](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/b46ad2eb-c0bf-4647-b096-ed1a4de4c227)
 
 
 
@@ -57,49 +37,26 @@ used in computer scienceand programming.
                       method, aiding users in practical implementation.
 
 
-![249457875-5872c5a9-ad2d-491e-ab0f-915bbc7f66ca](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/866c6d22-1212-4c8c-be17-4c19639f78c1)
 
 
 
-
-
-
-
-
+![10](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/ef090961-163f-4524-9378-cfc03c7fe687)        ![11](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/a6d1ab6c-2df9-4426-9227-189503b58923)
 
 
 **Chatbot Integration**: The app integrates a chatbot powered by OpenAI's API, enabling users to interact with the app using speech functionality.
 
-![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/27d4cafa-f0c1-46ff-bccb-04001ce2b7d6)
 
-
-
-
-![249458163-161a5e02-8317-48d0-90ec-d73ced6a5c6c](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/644ffd95-33bb-47f4-96e4-ff29067a093b)
-
-
-
-
-![249458228-698f3bf3-1a98-449f-86da-98a6d045f5e5](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/481b1118-09bc-4adf-8744-f1b60a6824d0)
+![7](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/d239f042-ef65-4fcc-8333-992fbd5c7f3e)          ![8](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/0073868d-8720-4aa8-a598-5ef2b77091fc)                     ![9](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/aaf56662-c315-42b8-8ce9-c9f599cb5552)
 
 
 
 
 
 
-**Privacy and Security**: Algorithm VisualiZer ensures the privacy and security of user data through secure storage and encryption techniques,
-with user data stored using NVARCHAR for enhanced password protection.
 
-![249458505-66387762-b805-4b12-9877-d48d3759a25a](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/21ad3c08-eb85-4588-b1bd-bc0b5d43122f)
+**Privacy and Security**: Algorithm VisualiZer ensures the privacy and security of user data through secure storage and encryption techniques with firebase Authentication.
 
-
-
-
-![image](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/e4a9b715-a664-4848-9b71-9189e4ace5b2)
-
-
-
-
+![2](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/f5d4e28d-0e4e-4ea4-81e5-4f07104fd422)                  ![3](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/0fb5fdf5-8cf9-4c2b-adf0-b2613112b724)                              ![4](https://github.com/Avi-014/Algorithm_Visualizer/assets/121863813/047735d0-c647-47da-a926-c95659234d72)
 
 
 
@@ -117,7 +74,7 @@ Privacy and Security
 
 Algorithm VisualiZer prioritizes user privacy and security. Here are the measures in place to protect user data:
 
-**Secure Storage**: User data, including passwords, is securely stored in a MySQL database using NVARCHAR for enhanced password protection.
+**Secure Storage**: User data, including passwords, is securely stored in a Firebase database with enhanced password protection.
 Encryption: The app implements encryption techniques to protect sensitive user information during storage and transmission.
 User Authentication: Algorithm VisualiZer includes user authentication mechanisms to ensure that only authorized individuals can access certain features or data.
 Secure Network Communication: All data transmitted between the app and the server, including chatbot interactions, is encrypted using secure protocols, such as HTTPS.
