@@ -11,4 +11,26 @@
 
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Dialog">
+        <item name="android:windowBackground">
+            @drawable/empty_bg</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowFixedWidthMajor">80pt</item>
+        <item name="android:windowAnimationStyle">@style/Animate</item>
+    </style>
+
+    <style name="Animate">
+        <item name="android:windowEnterAnimation">@anim/slide_scale_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_scale_out</item>
+    </style>
+
+    <style name="CustomProgressBar" parent="@android:style/Widget.ProgressBar">
+        <item name="android:progressDrawable">@drawable/custom_progress_bar</item>
+    </style>
+
+    <style name="ThreeDotsProgressBar" parent="@android:style/Widget.ProgressBar.Small">
+        <item name="android:indeterminateDrawable">@drawable/three_dots_progress</item>
+    </style>
+
 </resources>

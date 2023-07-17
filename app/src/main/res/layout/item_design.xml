@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="5dp"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginVertical="5dp"
-    app:cardElevation="4dp"
-    android:background="@drawable/border"
-    android:id="@+id/RecyclerItem">
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border">
+    android:layout_margin="7dp"
+    android:padding="7dp"
+    android:id="@+id/RecyclerItem"
+    android:background="@drawable/user_message">
 
         <TextView
             android:id="@+id/AlgoName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Bubble Sort"
-            android:padding="7dp"
+            android:layout_marginStart="15dp"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,9 +1,9 @@
-package com.example.algorithm_visualizer;
+package com.example.algorithm_visualizer.Models;
 
-public class ModelClass {
+public class AlgorithmsModelClass {
 
     private final String AlgoName;
-    ModelClass(String algoName){
+    public AlgorithmsModelClass(String algoName){
         this.AlgoName = algoName;
     }
 

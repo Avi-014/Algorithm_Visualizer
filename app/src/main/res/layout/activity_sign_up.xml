@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#343541"
     android:orientation="vertical"
-    tools:context=".SignUp">
+    tools:context=".Login_Signup.SignUp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,35 +37,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Enter Username"
-                app:startIconDrawable="@drawable/user"
-                app:startIconTint="#626262"
-                android:textColorHint="@color/white">
-                <EditText
-                    android:id="@+id/enter_username"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/enter_section"
-                    android:textSize="17sp"
-                    android:textColor="@color/white"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="370dp"
-            android:layout_height="50dp"
-            android:background="@drawable/enter_section"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="horizontal">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:hint="Enter Email"
+                app:hintTextColor="@color/white"
                 android:textColorHint="@color/white"
                 app:startIconTint="#626262"
                 app:startIconDrawable="@drawable/mail">
@@ -100,6 +73,7 @@
                 app:startIconTint="#626262"
                 app:counterMaxLength="20"
                 android:hint="Enter Password"
+                app:hintTextColor="@color/white"
                 android:textColorHint="@color/white"
                 app:endIconMode="password_toggle"
                 app:endIconTint="@color/white">
@@ -133,6 +107,7 @@
                 app:startIconTint="#626262"
                 app:counterMaxLength="20"
                 android:hint="Confirm Password"
+                app:hintTextColor="@color/white"
                 android:textColorHint="@color/white"
                 app:endIconMode="password_toggle"
                 app:endIconTint="@color/white">
@@ -164,12 +139,30 @@
                 android:textColor="@color/white"
                 android:textSize="25sp"/>
 
-            <ImageView
-                android:id="@+id/register_btn"
+            <FrameLayout
+                android:id="@+id/loginBtnLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/next_button"
-                android:layout_marginStart="170dp"/>
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:layout_marginStart="170dp">
+
+                <ImageView
+                    android:id="@+id/register_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/next_button"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:visibility="invisible"
+                    style="@style/CustomProgressBar"/>
+
+            </FrameLayout>
+
         </LinearLayout>
 
         <TextView

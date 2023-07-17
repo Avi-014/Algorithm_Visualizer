@@ -13,14 +13,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.algorithm_visualizer.Adapters.BotMessageAdapter;
+import com.example.algorithm_visualizer.Models.BotMessageModelClass;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,20 +37,18 @@ import okhttp3.Response;
 
 public class ChatBot extends AppCompatActivity {
 
-    private static final String BASE_URL = "https://api.openai.com/v1/completions";
-    private static final String YOUR_API_KEY = "Paste_Your_Api_Key_Here";
+    private static final String BASE_URL = "https://api.openai.com/v1/chat/completions";
+    private static final String YOUR_API_KEY = "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";
 
     public static final MediaType JSON
             = MediaType.get("application/json; charset=utf-8");
 
-    OkHttpClient client = new OkHttpClient();
-
-    List<MessageModelClass> messageList;
+    List<BotMessageModelClass> messageList;
     RecyclerView botRecyclerView;
     EditText askBotEditText;
     ImageButton sendButton;
     ImageButton microphone;
-    MessageAdapter messageAdapter;
+    BotMessageAdapter botMessageAdapter;
     private static final int REQUEST_CODE_SPEECH_INPUT = 1;
 
     @Override
@@ -60,15 +63,14 @@ public class ChatBot extends AppCompatActivity {
         microphone = findViewById(R.id.microphone);
 
         messageList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(messageList);
-        botRecyclerView.setAdapter(messageAdapter);
+        botMessageAdapter = new BotMessageAdapter(messageList);
+        botRecyclerView.setAdapter(botMessageAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setStackFromEnd(true);
         botRecyclerView.setLayoutManager(linearLayoutManager);
 
         sendButton.setOnClickListener(v -> {
             String Question = askBotEditText.getText().toString().trim();
-            addToChatList(Question , MessageModelClass.SENT_BY_ME);
+            addToChatList(Question , BotMessageModelClass.SENT_BY_ME);
             askBotEditText.setText("");
             processAI(Question);
         });
@@ -106,29 +108,34 @@ public class ChatBot extends AppCompatActivity {
 
     private void addToChatList(String Question , String sentBy) {
         runOnUiThread(() -> {
-            messageList.add(new MessageModelClass(Question, sentBy));
-            messageAdapter.notifyDataSetChanged();
-            messageAdapter.notifyItemInserted(messageList.size() - 1);
-            botRecyclerView.smoothScrollToPosition(messageAdapter.getItemCount());
+            messageList.add(new BotMessageModelClass(Question, sentBy));
+            botMessageAdapter.notifyItemInserted(messageList.size() - 1);
+            botRecyclerView.smoothScrollToPosition(messageList.size()-1);
         });
     }
 
     void addResponse(String response){
-        addToChatList(response,MessageModelClass.SENT_BY_BOT);
+        addToChatList(response, BotMessageModelClass.SENT_BY_BOT);
     }
 
         private void processAI(String Question) {
             JSONObject jsonBody = null;
             try {
                 jsonBody = new JSONObject();
-                jsonBody.put("model", "text-davinci-003");
-                jsonBody.put("prompt", Question);
-                jsonBody.put("max_tokens", 4000);
-                jsonBody.put("temperature", 0);
+                JSONArray messagesArray = new JSONArray();
+                JSONObject systemMessage = new JSONObject();
+                systemMessage.put("role", "system");
+                systemMessage.put("content", "You are a helpful assistant.");
+                JSONObject userMessage = new JSONObject();
+                userMessage.put("role", "user");
+                userMessage.put("content", Question);
+                messagesArray.put(systemMessage);
+                messagesArray.put(userMessage);
+                jsonBody.put("model", "gpt-3.5-turbo-0613");
+                jsonBody.put("messages", messagesArray);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
             Request request = new Request.Builder()
                     .url(BASE_URL)
@@ -136,36 +143,39 @@ public class ChatBot extends AppCompatActivity {
                     .post(body)
                     .build();
 
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                    addResponse("Failed to load response due to "+e.getMessage());
+                    if (e instanceof SocketTimeoutException) {
+                        addResponse("Request timed out. Please try again later.");
+                    } else {
+                        addResponse("Failed to load response due to " + e.getMessage());
+                    }
                 }
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                     assert response.body() != null;
                     if (response.isSuccessful()){
-                        JSONObject jsonObject;
                         try {
-                            jsonObject = new JSONObject(response.body().string());
-                            JSONArray jsonArray = jsonObject.getJSONArray("choices");
-                            String result = jsonArray.getJSONObject(0).getString("text");
-                            addResponse(result.trim());
+                            JSONObject jsonObject = new JSONObject(response.body().string());
+                            JSONArray choicesArray = jsonObject.getJSONArray("choices");
+                            JSONObject choiceObject = choicesArray.getJSONObject(0);
+                            JSONObject messageObject = choiceObject.getJSONObject("message");
+                            String assistantReply = messageObject.getString("content");
+                            addResponse(assistantReply.trim());
                         } catch (JSONException e) {
-                           e.printStackTrace();
+                            e.printStackTrace();
                         }
                     } else {
-                        addResponse("Failed to load response due to "+response.body().string());
+                        addResponse("Failed to load response due to " + response.body().string());
                     }
                 }
             });
-
-//        int timeoutMs = 1000;
-//        int maxNumRetries = 3;
-//        float backoffMultiplier = 2.0f;
-//        RetryPolicy policy = new DefaultRetryPolicy(timeoutMs , maxNumRetries, backoffMultiplier);
-//        request.setRetryPolicy(policy);
-//        MySingleton.getInstance(ChatBot.this).addToRequestQueue();
         }
 }

@@ -1,13 +1,13 @@
-package com.example.algorithm_visualizer;
+package com.example.algorithm_visualizer.Models;
 
-public class MessageModelClass {
+public class BotMessageModelClass {
     public static String SENT_BY_ME = "me";
     public static String SENT_BY_BOT = "bot";
 
-    public MessageModelClass() {
+    public BotMessageModelClass() {
     }
 
-    public MessageModelClass(String message, String sentBy) {
+    public BotMessageModelClass(String message, String sentBy) {
         this.message = message;
         this.sentBy = sentBy;
     }
